@@ -8,3 +8,5 @@ Standardization: Tiefenbach, H. (2010). Altsächsisches Handwörterbuch / A C
 </p>
 
 <b>osx-verb-conjugator</b> [TODO]
+
+<b>osx-declinator</b> [TODO]
