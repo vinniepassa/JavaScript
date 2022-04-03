@@ -1,0 +1,251 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link href="https://fonts.googleapis.com/css?family=Assistant:300&subset=all" rel="stylesheet">
+</head>
+<body>
+<script>
+	var nasals = ['m', 'n'];
+	var plosives = ['p', 'b', 't', 'd', 'k', 'g'];
+	var fricatives = ['f', 'v', 'θ', 'ð', 'x', 'ɣ', 'h'];
+	var voiced_fricatives = ['v', 'ð', 'ɣ'];
+	var voiceless_fricatives = ['f', 'θ', 'x'];
+	var sibilants = ['s̺', 'z'];
+	var approximants = ['w', 'l', 'j'];
+	var rhotic = ['r'];
+	var voiceless_cons = ['m', 'n', 'b', 'd', 'g', 'v', 'ð', 'ɣ', 'z', 'w', 'l', 'j', 'r'];
+	var consonants = nasals.concat(plosives, fricatives, sibilants, approximants, rhotic);
+	var front_vw = ['ɛ', 'ɛ:', 'e:', 'ɪ', 'i:']; // /e/ assimilated to /ɛ/ 
+	var back_vw = ['ɑ', 'ɑ:', 'ɔ', 'ɔ:', 'o:', 'ʊ', 'u:']; //"The backness of /ɑ/ and /ɑː/ is unknown. They may have been front [a, aː], central [ä, äː], back [ɑ, ɑː] or mixed (e.g. /a/ was front [a], whereas /aː/ was back [ɑː]). However, the merger of /ɑ/ and /ɔ/ into /ɔ/ in front of /ld/, as well as the tendency of Westphalian Old Saxon of spelling /ɔr/ as ⟨ar⟩ indicates that it was not as strongly fronted as it is in some modern Low German variants."
+	var vowels = ['ɑ', 'ɑ:', 'ɛ', 'ɛ:', 'e:', 'ɪ', 'i:','ɔ', 'ɔ:', 'o:', 'ʊ', 'u:'];
+
+	var sentence = 'hlahhian';
+	sentence = sentence.replace(/th/g, fricatives[2]);
+	
+	//GEMINATES
+	for(var item = 0; item < sentence.length; item++){
+		sentence = sentence.replace('bb', 'b:');
+		sentence = sentence.replace('dd', 'd:');
+		sentence = sentence.replace('ff', 'f:');
+		sentence = sentence.replace('kk', 'k:');
+		sentence = sentence.replace('ll', 'l:');
+		sentence = sentence.replace('mm', 'm:');
+		sentence = sentence.replace('nn', 'n:');
+		sentence = sentence.replace('pp', 'p:');
+		sentence = sentence.replace('rr', 'r:');
+		sentence = sentence.replace('ss', 's:');
+		sentence = sentence.replace('tt', 't:');
+	}	
+	
+	sentence = Array.from(sentence);
+	
+	//VOWELS
+	for(var item = 0; item < sentence.length; item++){
+		switch(sentence[item]){
+			case "a":
+				sentence[item] = back_vw[0]; //a -> ɑ
+				break;
+			case "ā":
+				sentence[item] = back_vw[1]; //ā -> ɑ:
+				break;
+			case "e":
+				sentence[item] = front_vw[0]; //e -> ɛ
+				break;
+			case "ê":
+				sentence[item] = front_vw[1]; //ê -> ɛ:
+				break;
+			case "ē":
+				sentence[item] = front_vw[2]; //ē -> e:
+				break;
+			case "i":
+				sentence[item] = front_vw[3]; //i -> ɪ
+				break;
+			case "ī":
+				sentence[item] = front_vw[4]; //ī -> i:
+				break;
+			case "o":
+				sentence[item] = back_vw[2]; //o -> ɔ
+				break;
+			case "ô":
+				sentence[item] = back_vw[3]; //ô -> ɔ:
+				break;
+			case "ō":
+				sentence[item] = back_vw[4]; //ō -> o:
+				break;
+			case "u":
+				sentence[item] = back_vw[5]; //u -> ʊ
+				break;
+			case "ū":
+				sentence[item] = back_vw[6]; //ū -> u:
+				break;
+		}
+	}
+	
+	//CONSONANTS
+	for(var item = 0; item < sentence.length; item++){
+		switch(sentence[item]){
+			case "c":
+				if((sentence[item+1] == front_vw[0]) || (sentence[item+1] == front_vw[3])){
+					sentence[item] = 'ts'; //c -> ts, mainly in Latin loanwords
+					break;
+				} else{
+					sentence[item] = 'k';
+					break;
+				}
+			case "f": /*TODO: Add case where 'f' stays the same when there is a verbal (and-, bi-, withar-, etc.) or nominal (gi-) prefix right before it; word to check: bifelhan*/
+				if(sentence[item+1] == 'd' || (vowels.includes(sentence[item-1]) && vowels.includes(sentence[item+1]))){
+					sentence[item] = '&#118'; 
+					break;
+				} else continue;
+			case "g":
+				if(item+1 == sentence.length){
+					if(sentence[item-1] == 'n' || sentence[item-1] == '&#331'){
+						sentence[item] = '&#107';
+						break;
+					} 
+					else{
+						sentence[item] = 'x'; 
+						break;}
+					
+				} else if((item == 0) && (back_vw.includes(sentence[item+1]))){
+					continue;	
+				} else{
+					sentence[item] = voiced_fricatives[2];
+					break;
+				}
+			case "h":
+				if(item != 0 && consonants.includes(sentence[item+1]) && sentence[item+1] != 'h'){
+					sentence[item] = voiceless_fricatives[2];
+					break;
+				} break;
+			case "j":
+				sentence[item] = 'ʝ';
+				break;
+			case "n":
+				if(sentence[item+1] === 'g' || sentence[item+1] === 'k'){
+					sentence[item] = '&#331';
+					break;
+				}
+			case "q":
+				if(sentence[item+1] == back_vw[5]){
+					sentence[item] = 'kw'; //qu -> kw
+					sentence.splice((item+1), 1);
+					break;
+				} else break;
+			case fricatives[2]:
+				if(sentence[item+1] == plosives[3]){
+					sentence[item] = '&#240'; //The following displays θ instead of ð somehow: String.fromCodePoints(240)
+					break;
+				} else break;
+		}
+	}	
+
+	//SPECIAL CASES
+
+	//"The voiceless spirants /f/, /θ/, and /s̺/ gain voiced allophones ([v], [ð], and [z]) when between vowels"
+	for(var item = 1; item < sentence.length; item++){
+		if(vowels.includes(sentence[item-1]) && vowels.includes(sentence[item+1])){
+			switch(sentence[item]){
+				case fricatives[0]:
+					sentence[item] = fricatives[1];
+					break;
+				case fricatives[2]:
+					sentence[item] = fricatives[3];
+					break;
+				case sibilants[0]: //If the character 's̺' is not recognized, change sibilants[0] to s
+					sentence[item] = sibilants[1];
+					break;
+			}
+		}
+	}
+	
+	//"[Voiced] fricatives were devoiced again word finally and before voiceless consonants"
+	for(var item = 0; item < sentence.length; item++){
+		if((voiced_fricatives.includes(sentence[item]) || (sentence[item] == fricatives[6])) && (voiceless_cons.includes(sentence[item+1]) || (item == (sentence.length-1)))){
+			switch(sentence[item]){
+				case voiced_fricatives[0]:
+					if(sentence[item] == sentence[item+1]){
+						continue;
+					}
+					else{
+						sentence[item] = voiceless_fricatives[0];
+						break;	
+					}
+				case voiced_fricatives[1]:
+					sentence[item] = voiceless_fricatives[1];
+					break;
+				case voiced_fricatives[2]:
+					if(sentence[item] == sentence[item+1]){
+						continue;
+					} 
+					else{
+						sentence[item] = voiceless_fricatives[2];
+						break;
+					}
+					
+				case fricatives[6]:
+					if(item != 0){
+						sentence[item] = voiceless_fricatives[2];
+						break;
+					}
+			}
+		}
+	}
+	
+	//"/n/ had a velar allophone [ŋ] when it occurred before the velars /k, ɡ/"
+	for(var item = 0; item < sentence.length; item++){
+		if((sentence[item] === nasals[1]) && (sentence[item+1] === plosives[4] || sentence[item+1] === 'ɣ')){
+			sentence[item] = 'ŋ';
+		}
+	}
+	
+	//"/ɣ/ was stopped in gemination and after [ŋ]"
+	for(var item = 0; item < sentence.length; item++){
+		if((sentence[item] == voiced_fricatives[2]) && (sentence[item+1] == voiced_fricatives[2])){
+			sentence[item] = 'g:';
+			sentence.splice((item+1), 1);
+		}
+		else if(sentence[item-1] == 'ŋ'){
+			sentence[item] = plosives[5];
+		}
+	}		
+	
+	//(g:i AND g:e) -> g:ʝ
+	for(var item = 0; item < sentence.length; item++){
+		if((sentence[item] == 'ɛ' || sentence[item] == 'ɪ') && (sentence[item-1] == 'g:')){
+			sentence[item] = 'ʝ';
+		}
+	}		
+	
+	
+	//"Before front vowels, /ɣ/ was palatalized to some extent, probably resulting in palatal [ʝ]"
+	for(var item = 0; item < sentence.length; item++){
+		if((sentence[item] == voiced_fricatives[2]) && (front_vw.includes(sentence[item+1]))){
+			sentence[item] = 'ʝ';
+		}
+	}	
+
+	//"[...] gemination of /v/ gave [bː]; [...] In the gemination of /h/, the older pronunciation [xː] was retained"
+	for(var item = 0; item < sentence.length; item++){
+		if((sentence[item] == voiced_fricatives[0]) || (sentence[item] == fricatives[6])){
+			switch(sentence[item]){
+				case voiced_fricatives[0]:
+					if(sentence[item] == sentence[item+1]){
+						sentence[item] = 'b:';
+						sentence.splice((item+1), 1);
+					}
+					break;
+				case fricatives[6]:
+					if(sentence[item] == sentence[item+1]){
+						sentence[item] = 'x:';
+						sentence.splice((item+1), 1);
+					}	
+					break;
+			}
+		}
+	}		
+
+	document.write(sentence.join(''));
+</script>
+</body>
+</html>
