@@ -7,3 +7,4 @@ _______________________________________________________________
 <p>Rules for conversion: <link>https://en.wikipedia.org/wiki/Old_Saxon_phonology</link><br>
 Standardization: Tiefenbach, H. (2010). Altsächsisches Handwörterbuch / A Concise Old Saxon Dictionary. Germania: De Gruyter.
 </p>
+_______________________________________________________________
