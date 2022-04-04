@@ -11,6 +11,6 @@ Programs that deal with the Old Saxon (Old Low German) language
 Standardization: Tiefenbach, H. (2010). Altsächsisches Handwörterbuch / A Concise Old Saxon Dictionary. Germania: De Gruyter.
 </p>
 
-<h1><b>osx-verb-conjugator</b></h1> [TODO]
-
 <h1><b>osx-declinator</b></h1> [TODO]
+
+<h1><b>osx-verb-conjugator</b></h1> [TODO]
