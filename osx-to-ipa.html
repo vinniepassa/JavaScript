@@ -19,122 +19,131 @@
 	var back_vw = ['ɑ', 'ɑ:', 'ɔ', 'ɔ:', 'o:', 'ʊ', 'u:']; //"The backness of /ɑ/ and /ɑː/ is unknown. They may have been front [a, aː], central [ä, äː], back [ɑ, ɑː] or mixed (e.g. /a/ was front [a], whereas /aː/ was back [ɑː]). However, the merger of /ɑ/ and /ɔ/ into /ɔ/ in front of /ld/, as well as the tendency of Westphalian Old Saxon of spelling /ɔr/ as ⟨ar⟩ indicates that it was not as strongly fronted as it is in some modern Low German variants."
 	var vowels = ['ɑ', 'ɑ:', 'ɛ', 'ɛ:', 'e:', 'ɪ', 'i:','ɔ', 'ɔ:', 'o:', 'ʊ', 'u:'];
 
-	var sentence = 'hlahhian';
-	sentence = sentence.replace(/th/g, fricatives[2]);
+	var text = 'bifelhan';
+	
+	text = text.replace(/th/g, fricatives[2]);
 	
 	//GEMINATES
-	for(var item = 0; item < sentence.length; item++){
-		sentence = sentence.replace('bb', 'b:');
-		sentence = sentence.replace('dd', 'd:');
-		sentence = sentence.replace('ff', 'f:');
-		sentence = sentence.replace('kk', 'k:');
-		sentence = sentence.replace('ll', 'l:');
-		sentence = sentence.replace('mm', 'm:');
-		sentence = sentence.replace('nn', 'n:');
-		sentence = sentence.replace('pp', 'p:');
-		sentence = sentence.replace('rr', 'r:');
-		sentence = sentence.replace('ss', 's:');
-		sentence = sentence.replace('tt', 't:');
+	for(var item = 0; item < text.length; item++){
+		text = text.replace('bb', 'b:');
+		text = text.replace('dd', 'd:');
+		text = text.replace('ff', 'f:');
+		text = text.replace('kk', 'k:');
+		text = text.replace('ll', 'l:');
+		text = text.replace('mm', 'm:');
+		text = text.replace('nn', 'n:');
+		text = text.replace('pp', 'p:');
+		text = text.replace('rr', 'r:');
+		text = text.replace('ss', 's:');
+		text = text.replace('tt', 't:');
 	}	
 	
-	sentence = Array.from(sentence);
+	text = Array.from(text);
+	
+	//Check for the presence of verbal prefix 'bi', so that 'f' keeps being voiceless
+	for(var item = 0; item < text.length; item++){
+		if(text[item] == 'b' && text[item+1] == 'i' && text[item+2] == 'f'){
+			var prefix = true;
+			text.splice(item, 2);
+		}
+	}
 	
 	//VOWELS
-	for(var item = 0; item < sentence.length; item++){
-		switch(sentence[item]){
+	for(var item = 0; item < text.length; item++){
+		switch(text[item]){
 			case "a":
-				sentence[item] = back_vw[0]; //a -> ɑ
+				text[item] = back_vw[0]; //a -> ɑ
 				break;
 			case "ā":
-				sentence[item] = back_vw[1]; //ā -> ɑ:
+				text[item] = back_vw[1]; //ā -> ɑ:
 				break;
 			case "e":
-				sentence[item] = front_vw[0]; //e -> ɛ
+				text[item] = front_vw[0]; //e -> ɛ
 				break;
 			case "ê":
-				sentence[item] = front_vw[1]; //ê -> ɛ:
+				text[item] = front_vw[1]; //ê -> ɛ:
 				break;
 			case "ē":
-				sentence[item] = front_vw[2]; //ē -> e:
+				text[item] = front_vw[2]; //ē -> e:
 				break;
 			case "i":
-				sentence[item] = front_vw[3]; //i -> ɪ
+				text[item] = front_vw[3]; //i -> ɪ
 				break;
 			case "ī":
-				sentence[item] = front_vw[4]; //ī -> i:
+				text[item] = front_vw[4]; //ī -> i:
 				break;
 			case "o":
-				sentence[item] = back_vw[2]; //o -> ɔ
+				text[item] = back_vw[2]; //o -> ɔ
 				break;
 			case "ô":
-				sentence[item] = back_vw[3]; //ô -> ɔ:
+				text[item] = back_vw[3]; //ô -> ɔ:
 				break;
 			case "ō":
-				sentence[item] = back_vw[4]; //ō -> o:
+				text[item] = back_vw[4]; //ō -> o:
 				break;
 			case "u":
-				sentence[item] = back_vw[5]; //u -> ʊ
+				text[item] = back_vw[5]; //u -> ʊ
 				break;
 			case "ū":
-				sentence[item] = back_vw[6]; //ū -> u:
+				text[item] = back_vw[6]; //ū -> u:
 				break;
 		}
 	}
 	
 	//CONSONANTS
-	for(var item = 0; item < sentence.length; item++){
-		switch(sentence[item]){
+	for(var item = 0; item < text.length; item++){
+		switch(text[item]){
 			case "c":
-				if((sentence[item+1] == front_vw[0]) || (sentence[item+1] == front_vw[3])){
-					sentence[item] = 'ts'; //c -> ts, mainly in Latin loanwords
+				if((text[item+1] == front_vw[0]) || (text[item+1] == front_vw[3])){
+					text[item] = 'ts'; //c -> ts, mainly in Latin loanwords
 					break;
 				} else{
-					sentence[item] = 'k';
+					text[item] = 'k';
 					break;
 				}
-			case "f": /*TODO: Add case where 'f' stays the same when there is a verbal (and-, bi-, withar-, etc.) or nominal (gi-) prefix right before it; word to check: bifelhan*/
-				if(sentence[item+1] == 'd' || (vowels.includes(sentence[item-1]) && vowels.includes(sentence[item+1]))){
-					sentence[item] = '&#118'; 
+			case "f":
+				if(text[item+1] == 'd' || (vowels.includes(text[item-1]) && vowels.includes(text[item+1]))){
+					text[item] = '&#118'; 
 					break;
 				} else continue;
 			case "g":
-				if(item+1 == sentence.length){
-					if(sentence[item-1] == 'n' || sentence[item-1] == '&#331'){
-						sentence[item] = '&#107';
+				if(item+1 == text.length){
+					if(text[item-1] == 'n' || text[item-1] == '&#331'){
+						text[item] = '&#107';
 						break;
 					} 
 					else{
-						sentence[item] = 'x'; 
+						text[item] = 'x'; 
 						break;}
 					
-				} else if((item == 0) && (back_vw.includes(sentence[item+1]))){
+				} else if((item == 0) && (back_vw.includes(text[item+1]))){
 					continue;	
 				} else{
-					sentence[item] = voiced_fricatives[2];
+					text[item] = voiced_fricatives[2];
 					break;
 				}
 			case "h":
-				if(item != 0 && consonants.includes(sentence[item+1]) && sentence[item+1] != 'h'){
-					sentence[item] = voiceless_fricatives[2];
+				if(item != 0 && consonants.includes(text[item+1]) && text[item+1] != 'h'){
+					text[item] = voiceless_fricatives[2];
 					break;
 				} break;
 			case "j":
-				sentence[item] = 'ʝ';
+				text[item] = 'ʝ';
 				break;
 			case "n":
-				if(sentence[item+1] === 'g' || sentence[item+1] === 'k'){
-					sentence[item] = '&#331';
+				if(text[item+1] === 'g' || text[item+1] === 'k'){
+					text[item] = '&#331';
 					break;
 				}
 			case "q":
-				if(sentence[item+1] == back_vw[5]){
-					sentence[item] = 'kw'; //qu -> kw
-					sentence.splice((item+1), 1);
+				if(text[item+1] == back_vw[5]){
+					text[item] = 'kw'; //qu -> kw
+					text.splice((item+1), 1);
 					break;
 				} else break;
 			case fricatives[2]:
-				if(sentence[item+1] == plosives[3]){
-					sentence[item] = '&#240'; //The following displays θ instead of ð somehow: String.fromCodePoints(240)
+				if(text[item+1] == plosives[3]){
+					text[item] = '&#240'; //The following displays θ instead of ð somehow: String.fromCodePoints(240)
 					break;
 				} else break;
 		}
@@ -143,49 +152,49 @@
 	//SPECIAL CASES
 
 	//"The voiceless spirants /f/, /θ/, and /s̺/ gain voiced allophones ([v], [ð], and [z]) when between vowels"
-	for(var item = 1; item < sentence.length; item++){
-		if(vowels.includes(sentence[item-1]) && vowels.includes(sentence[item+1])){
-			switch(sentence[item]){
+	for(var item = 1; item < text.length; item++){
+		if(vowels.includes(text[item-1]) && vowels.includes(text[item+1])){
+			switch(text[item]){
 				case fricatives[0]:
-					sentence[item] = fricatives[1];
+					text[item] = fricatives[1];
 					break;
 				case fricatives[2]:
-					sentence[item] = fricatives[3];
+					text[item] = fricatives[3];
 					break;
 				case sibilants[0]: //If the character 's̺' is not recognized, change sibilants[0] to s
-					sentence[item] = sibilants[1];
+					text[item] = sibilants[1];
 					break;
 			}
 		}
 	}
 	
 	//"[Voiced] fricatives were devoiced again word finally and before voiceless consonants"
-	for(var item = 0; item < sentence.length; item++){
-		if((voiced_fricatives.includes(sentence[item]) || (sentence[item] == fricatives[6])) && (voiceless_cons.includes(sentence[item+1]) || (item == (sentence.length-1)))){
-			switch(sentence[item]){
+	for(var item = 0; item < text.length; item++){
+		if((voiced_fricatives.includes(text[item]) || (text[item] == fricatives[6])) && (voiceless_cons.includes(text[item+1]) || (item == (text.length-1)))){
+			switch(text[item]){
 				case voiced_fricatives[0]:
-					if(sentence[item] == sentence[item+1]){
+					if(text[item] == text[item+1]){
 						continue;
 					}
 					else{
-						sentence[item] = voiceless_fricatives[0];
+						text[item] = voiceless_fricatives[0];
 						break;	
 					}
 				case voiced_fricatives[1]:
-					sentence[item] = voiceless_fricatives[1];
+					text[item] = voiceless_fricatives[1];
 					break;
 				case voiced_fricatives[2]:
-					if(sentence[item] == sentence[item+1]){
+					if(text[item] == text[item+1]){
 						continue;
 					} 
 					else{
-						sentence[item] = voiceless_fricatives[2];
+						text[item] = voiceless_fricatives[2];
 						break;
 					}
 					
 				case fricatives[6]:
 					if(item != 0){
-						sentence[item] = voiceless_fricatives[2];
+						text[item] = voiceless_fricatives[2];
 						break;
 					}
 			}
@@ -193,59 +202,64 @@
 	}
 	
 	//"/n/ had a velar allophone [ŋ] when it occurred before the velars /k, ɡ/"
-	for(var item = 0; item < sentence.length; item++){
-		if((sentence[item] === nasals[1]) && (sentence[item+1] === plosives[4] || sentence[item+1] === 'ɣ')){
-			sentence[item] = 'ŋ';
+	for(var item = 0; item < text.length; item++){
+		if((text[item] === nasals[1]) && (text[item+1] === plosives[4] || text[item+1] === 'ɣ')){
+			text[item] = 'ŋ';
 		}
 	}
 	
 	//"/ɣ/ was stopped in gemination and after [ŋ]"
-	for(var item = 0; item < sentence.length; item++){
-		if((sentence[item] == voiced_fricatives[2]) && (sentence[item+1] == voiced_fricatives[2])){
-			sentence[item] = 'g:';
-			sentence.splice((item+1), 1);
+	for(var item = 0; item < text.length; item++){
+		if((text[item] == voiced_fricatives[2]) && (text[item+1] == voiced_fricatives[2])){
+			text[item] = 'g:';
+			text.splice((item+1), 1);
 		}
-		else if(sentence[item-1] == 'ŋ'){
-			sentence[item] = plosives[5];
+		else if(text[item-1] == 'ŋ'){
+			text[item] = plosives[5];
 		}
 	}		
 	
 	//(g:i AND g:e) -> g:ʝ
-	for(var item = 0; item < sentence.length; item++){
-		if((sentence[item] == 'ɛ' || sentence[item] == 'ɪ') && (sentence[item-1] == 'g:')){
-			sentence[item] = 'ʝ';
+	for(var item = 0; item < text.length; item++){
+		if((text[item] == 'ɛ' || text[item] == 'ɪ') && (text[item-1] == 'g:')){
+			text[item] = 'ʝ';
 		}
 	}		
 	
 	
 	//"Before front vowels, /ɣ/ was palatalized to some extent, probably resulting in palatal [ʝ]"
-	for(var item = 0; item < sentence.length; item++){
-		if((sentence[item] == voiced_fricatives[2]) && (front_vw.includes(sentence[item+1]))){
-			sentence[item] = 'ʝ';
+	for(var item = 0; item < text.length; item++){
+		if((text[item] == voiced_fricatives[2]) && (front_vw.includes(text[item+1]))){
+			text[item] = 'ʝ';
 		}
 	}	
 
 	//"[...] gemination of /v/ gave [bː]; [...] In the gemination of /h/, the older pronunciation [xː] was retained"
-	for(var item = 0; item < sentence.length; item++){
-		if((sentence[item] == voiced_fricatives[0]) || (sentence[item] == fricatives[6])){
-			switch(sentence[item]){
+	for(var item = 0; item < text.length; item++){
+		if((text[item] == voiced_fricatives[0]) || (text[item] == fricatives[6])){
+			switch(text[item]){
 				case voiced_fricatives[0]:
-					if(sentence[item] == sentence[item+1]){
-						sentence[item] = 'b:';
-						sentence.splice((item+1), 1);
+					if(text[item] == text[item+1]){
+						text[item] = 'b:';
+						text.splice((item+1), 1);
 					}
 					break;
 				case fricatives[6]:
-					if(sentence[item] == sentence[item+1]){
-						sentence[item] = 'x:';
-						sentence.splice((item+1), 1);
+					if(text[item] == text[item+1]){
+						text[item] = 'x:';
+						text.splice((item+1), 1);
 					}	
 					break;
 			}
 		}
 	}		
 
-	document.write(sentence.join(''));
+	//Add prefix if present
+	if(prefix){
+		text.unshift('bɪ');
+	}
+	
+	document.write(text.join(''));
 </script>
 </body>
 </html>
