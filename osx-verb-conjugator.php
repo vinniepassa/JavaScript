@@ -12,40 +12,40 @@
 			for($i = strlen($infinitive)-2; $i < strlen($infinitive); $i++){
 				if($infinitive[$i] == 'a' || $infinitive[$i] == 'n'){
 					$infinitive[$i] = ' ';
-                    $infinitive = trim($infinitive);
+                    			$infinitive = trim($infinitive);
 				}
 			}
 			
 			echo '<h1>Present indicative</h1>';
-            echo '<p>';
+            		echo '<p>';
 			echo 'ik '."<span style=background-color:lightgreen;>$infinitive".'-u</span><br>';
-            echo 'thū '."<span style=background-color:lightgreen;>$infinitive".'-is</span><br>';
-            echo 'hē/it/siu '."<span style=background-color:lightgreen;>$infinitive".'-id</span><br>';
+            		echo 'thū '."<span style=background-color:lightgreen;>$infinitive".'-is</span><br>';
+            		echo 'hē/it/siu '."<span style=background-color:lightgreen;>$infinitive".'-id</span><br>';
 			echo 'wī/gī/sia '."<span style=background-color:lightgreen;>$infinitive".'-ad</span><br>';
-            echo '</p>';            
+            		echo '</p>';            
 			
 			$infinitive = str_replace('ī', 'ē', $infinitive);
 			
 			echo '<h1>Past indicative</h1>';
-            echo '<p>';
+            		echo '<p>';
 			echo 'ik '."<span style=background-color:lightgreen;>$infinitive".'</span><br>';
 			$infinitive = str_replace('ē', 'i', $infinitive);
-            echo 'thū '."<span style=background-color:lightgreen;>$infinitive".'-i</span><br>';
+            		echo 'thū '."<span style=background-color:lightgreen;>$infinitive".'-i</span><br>';
 			$infinitive = str_replace('i', 'ē', $infinitive);
-            echo 'hē/it/siu '."<span style=background-color:lightgreen;>$infinitive".'</span><br>';
+            		echo 'hē/it/siu '."<span style=background-color:lightgreen;>$infinitive".'</span><br>';
 			$infinitive = str_replace('ē', 'i', $infinitive);			
 			echo 'wī/gī/sia '."<span style=background-color:lightgreen;>$infinitive".'-un</span><br>';
-            echo '</p>';   
+            		echo '</p>';   
 			
 			$infinitive = str_replace('i', 'ī', $infinitive);			
 			
 			echo '<h1>Present subjunctive</h1>';
-            echo '<p>';
+            		echo '<p>';
 			echo 'ik '."<span style=background-color:lightgreen;>$infinitive".'-e</span><br>';
-            echo 'thū '."<span style=background-color:lightgreen;>$infinitive".'-es</span><br>';
-            echo 'hē/it/siu '."<span style=background-color:lightgreen;>$infinitive".'-e</span><br>';
+            		echo 'thū '."<span style=background-color:lightgreen;>$infinitive".'-es</span><br>';
+            		echo 'hē/it/siu '."<span style=background-color:lightgreen;>$infinitive".'-e</span><br>';
 			echo 'wī/gī/sia '."<span style=background-color:lightgreen;>$infinitive".'-en</span><br>';
-            echo '</p>'; 
+            		echo '</p>'; 
 			
 			$infinitive = str_replace('ī', 'i', $infinitive);
 		?>
