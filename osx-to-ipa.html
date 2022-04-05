@@ -127,7 +127,7 @@
 					if(item != 0 && consonants.includes(text[item+1]) && text[item+1] != 'h'){
 						text[item] = voiceless_fricatives[2];
 						break;
-					} break;
+					} else break;
 				case "j":
 					text[item] = 'ʝ';
 					break;
@@ -135,7 +135,7 @@
 					if(text[item+1] === 'g' || text[item+1] === 'k'){
 						text[item] = '&#331';
 						break;
-					}
+					} else break;
 				case "q":
 					if(text[item+1] == back_vw[5]){
 						text[item] = 'kw'; //qu -> kw
