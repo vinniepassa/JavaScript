@@ -10,7 +10,7 @@
 	var fricatives = ['f', 'v', 'θ', 'ð', 'x', 'ɣ', 'h'];
 	var voiced_fricatives = ['v', 'ð', 'ɣ'];
 	var voiceless_fricatives = ['f', 'θ', 'x'];
-	var sibilants = ['s̺', 'z'];
+	var sibilants = ['s', 'z'];
 	var approximants = ['w', 'l', 'j'];
 	var rhotic = ['r'];
 	var voiceless_cons = ['m', 'n', 'b', 'd', 'g', 'v', 'ð', 'ɣ', 'z', 'w', 'l', 'j', 'r'];
@@ -19,11 +19,10 @@
 	var back_vw = ['ɑ', 'ɑ:', 'ɔ', 'ɔ:', 'o:', 'ʊ', 'u:']; //"The backness of /ɑ/ and /ɑː/ is unknown. They may have been front [a, aː], central [ä, äː], back [ɑ, ɑː] or mixed (e.g. /a/ was front [a], whereas /aː/ was back [ɑː]). However, the merger of /ɑ/ and /ɔ/ into /ɔ/ in front of /ld/, as well as the tendency of Westphalian Old Saxon of spelling /ɔr/ as ⟨ar⟩ indicates that it was not as strongly fronted as it is in some modern Low German variants."
 	var vowels = ['ɑ', 'ɑ:', 'ɛ', 'ɛ:', 'e:', 'ɪ', 'i:','ɔ', 'ɔ:', 'o:', 'ʊ', 'u:'];
 
-	arr = ['werthan', 'thū', 'kuning'];
+	arr = ['werthan', 'thū', 'kuning', 'lahs', 'naht', 'hluttar', 'sah', 'fāhan', 'bifelhan'];
 	
 	for(var text of arr){
 		text = text.replace(/th/g, fricatives[2]);
-
 		//GEMINATES
 		for(var item = 0; item < text.length; item++){
 			text = text.replace('bb', 'b:');
@@ -38,9 +37,9 @@
 			text = text.replace('ss', 's:');
 			text = text.replace('tt', 't:');
 		}	
-
+		
 		text = Array.from(text);
-
+		
 		//Check for the presence of verbal prefix 'bi', so that 'f' keeps being voiceless
 		for(var item = 0; item < text.length; item++){
 			if(text[item] == 'b' && text[item+1] == 'i' && text[item+2] == 'f'){
@@ -48,8 +47,8 @@
 				text.splice(item, 2);
 			}
 		}
-		//TODO: Make sure that other verbal or nominal prefixes do not make 'f' voiced [(angi)faldan, (ti)fallan, etc.]
-
+		//TODO: Make sure that other verbal or nominal prefixes do not make 'f' voiced [(an(a)gi)faldan, (ti)fallan, etc.]
+		
 		//VOWELS
 		for(var item = 0; item < text.length; item++){
 			switch(text[item]){
@@ -91,7 +90,7 @@
 					break;
 			}
 		}
-
+		
 		//CONSONANTS
 		for(var item = 0; item < text.length; item++){
 			switch(text[item]){
@@ -117,7 +116,7 @@
 						else{
 							text[item] = 'x'; 
 							break;}
-
+						
 					} else if((item == 0) && (back_vw.includes(text[item+1]))){
 						continue;	
 					} else{
@@ -148,6 +147,9 @@
 						text[item] = '&#240'; //The following displays θ instead of ð somehow: String.fromCodePoints(240)
 						break;
 					} else break;
+				case 's':
+					text[item] = 's̺';
+					break;
 			}
 		}	
 
@@ -169,7 +171,7 @@
 				}
 			}
 		}
-
+		
 		//"[Voiced] fricatives were devoiced again word finally and before voiceless consonants"
 		for(var item = 0; item < text.length; item++){
 			if((voiced_fricatives.includes(text[item]) || (text[item] == fricatives[6])) && (voiceless_cons.includes(text[item+1]) || (item == (text.length-1)))){
@@ -193,7 +195,7 @@
 							text[item] = voiceless_fricatives[2];
 							break;
 						}
-
+						
 					case fricatives[6]:
 						if(item != 0){
 							text[item] = voiceless_fricatives[2];
@@ -202,14 +204,14 @@
 				}
 			}
 		}
-
+		
 		//"/n/ had a velar allophone [ŋ] when it occurred before the velars /k, ɡ/"
 		for(var item = 0; item < text.length; item++){
 			if((text[item] === nasals[1]) && (text[item+1] === plosives[4] || text[item+1] === 'ɣ')){
 				text[item] = 'ŋ';
 			}
 		}
-
+		
 		//"/ɣ/ was stopped in gemination and after [ŋ]"
 		for(var item = 0; item < text.length; item++){
 			if((text[item] == voiced_fricatives[2]) && (text[item+1] == voiced_fricatives[2])){
@@ -220,15 +222,15 @@
 				text[item] = plosives[5];
 			}
 		}		
-
+		
 		//(g:i AND g:e) -> g:ʝ
 		for(var item = 0; item < text.length; item++){
 			if((text[item] == 'ɛ' || text[item] == 'ɪ') && (text[item-1] == 'g:')){
 				text[item] = 'ʝ';
 			}
 		}		
-
-
+		
+		
 		//"Before front vowels, /ɣ/ was palatalized to some extent, probably resulting in palatal [ʝ]"
 		for(var item = 0; item < text.length; item++){
 			if((text[item] == voiced_fricatives[2]) && (front_vw.includes(text[item+1]))){
@@ -260,10 +262,10 @@
 		if(prefix){
 			text.unshift('bɪ');
 		}
-
+		
 		var str = text.join('');
-		document.write(str, '<br>');
-	}
+		document.write(str, '<br>');		
+	}	
 </script>
 </body>
 </html>
