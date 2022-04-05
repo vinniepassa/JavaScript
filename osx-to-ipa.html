@@ -19,7 +19,7 @@
 	var back_vw = ['ɑ', 'ɑ:', 'ɔ', 'ɔ:', 'o:', 'ʊ', 'u:']; //"The backness of /ɑ/ and /ɑː/ is unknown. They may have been front [a, aː], central [ä, äː], back [ɑ, ɑː] or mixed (e.g. /a/ was front [a], whereas /aː/ was back [ɑː]). However, the merger of /ɑ/ and /ɔ/ into /ɔ/ in front of /ld/, as well as the tendency of Westphalian Old Saxon of spelling /ɔr/ as ⟨ar⟩ indicates that it was not as strongly fronted as it is in some modern Low German variants."
 	var vowels = ['ɑ', 'ɑ:', 'ɛ', 'ɛ:', 'e:', 'ɪ', 'i:','ɔ', 'ɔ:', 'o:', 'ʊ', 'u:'];
 
-	arr = ['werthan', 'thū', 'kuning', 'lahs', 'naht', 'hluttar', 'sah', 'fāhan', 'bifelhan'];
+	arr = ['werthan', 'thū', 'kuning', 'wesan', 'lahs', 'bifelhan', 'naht', 'hluttar', 'sah', 'fāhan', 'brōthar'];
 	
 	for(var text of arr){
 		text = text.replace(/th/g, fricatives[2]);
@@ -147,9 +147,6 @@
 						text[item] = '&#240'; //The following displays θ instead of ð somehow: String.fromCodePoints(240)
 						break;
 					} else break;
-				case 's':
-					text[item] = 's̺';
-					break;
 			}
 		}	
 
@@ -257,6 +254,14 @@
 				}
 			}
 		}		
+		
+		for(var item = 0; item < text.length; item++){
+			switch(text[item]){
+				case 's':
+					text[item] = 's̺';
+					break;
+			}
+		}
 
 		//Add prefix if present
 		if(prefix){
